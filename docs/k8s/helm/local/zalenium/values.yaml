@@ -1,3 +1,4 @@
+rbacEnabled: true
 hub:
   ## The repository and image
   ## ref: https://hub.docker.com/r/selenium/hub/
@@ -25,30 +26,36 @@ hub:
   ## ref: http://www.seleniumhq.org/docs/07_selenium_grid.jsp#node-configuration
   # seOpts:
 
-  ## Defining a JMX port will open the port on the container, however, it 
+  ## Defining a JMX port will open the port on the container, however, it
   ## requires additional javaOpts, ie
   ## javaOpts: >
-  ##   -Dcom.sun.management.jmxremote.port=4000 
-  ##   -Dcom.sun.management.jmxremote.authenticate=false 
-  ##   -Dcom.sun.management.jmxremote.ssl=false 
+  ##   -Dcom.sun.management.jmxremote.port=4000
+  ##   -Dcom.sun.management.jmxremote.authenticate=false
+  ##   -Dcom.sun.management.jmxremote.ssl=false
   ## ref: http://openjdk.java.net/groups/jmx/
   # jmxPort: 4000
 
   ## Use persistent storage or local?
-  persistentVolumesEnabled: false
+  persistentVolume:
+    enabled: false
+    size: 80Gi
   localVolumesRoot: '/tmp'
 
+  nodeSelector: {}
   ## Configure resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
   resources:
-    limits:
+    requests:
       cpu: ".5"
       memory: "512Mi"
+    limits:
+      cpu: ".75"
+      memory: "1Gi"
 
   ## The type of service to create
   ##   Values: ClusterIP, NodePort, LoadBalancer, or ExternalName
   ## ref: https://kubernetes.io/docs/user-guide/services/
-  serviceType: "NodePort"
+  serviceType: "ClusterIp"
 
   ## Control where client requests go, to the same pod or round-robin
   ##   Values: ClientIP or None

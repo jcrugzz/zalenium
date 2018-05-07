@@ -105,5 +105,10 @@ spec:
               mountPath: /home/seluser/videos
             - name: {{ template "hub.fullname" . }}-shared
               mountPath: /tmp/mounted
+    {{- if .Values.rbacEnable }}
       serviceAccountName: {{ $serviceName }}
-      serviceAccount: {{ $serviceName }}
+    {{- end }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
